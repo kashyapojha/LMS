@@ -32,7 +32,7 @@ export default function CourseCard({ course, categoryName, categoryColor = '#6c1
   const isActive = course.status !== 'archived';
 
   const targetUrl = isCurriculumView
-    ? `/admin/courses/${course.id}`
+    ? `/admin/curriculum/${course.id}`
     : `/admin/courses/${course.id}/edit`;
 
   const handleCardClick = (e) => {
@@ -143,7 +143,7 @@ export default function CourseCard({ course, categoryName, categoryColor = '#6c1
 
           {isCurriculumView ? (
             <Link
-              to={`/admin/courses/${course.id}`}
+              to={`/admin/curriculum/${course.id}`}
               className="ml-auto flex items-center gap-0.5 text-xs font-bold text-accent-teal-dark hover:underline"
             >
               Manage →

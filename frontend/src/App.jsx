@@ -92,7 +92,7 @@ export default function App() {
                     </RouteTitle>
                   } />
                   
-                  <Route path="/admin/courses/:courseId" element={
+                  <Route path="/admin/curriculum/:courseId" element={
                     <RouteTitle title="Course Builder">
                       <CourseBuilderPage />
                     </RouteTitle>

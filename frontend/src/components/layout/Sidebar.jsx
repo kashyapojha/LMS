@@ -10,7 +10,6 @@ const NAV_ITEMS = [
   { href: '/admin/categories', label: 'Categories',   icon: Tag },
   { href: '/admin/curriculum', label: 'Curriculum',   icon: Layers },
   { href: '/admin/dashboard',  label: 'Dashboard',    icon: LayoutDashboard },
-  { href: '/admin/media',      label: 'Media Library',icon: Image },
   { href: '/admin/branding',   label: 'Branding',     icon: Settings },
 ];
 
@@ -68,9 +67,9 @@ export default function Sidebar() {
         {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
           let active = false;
           if (label === 'Curriculum') {
-            active = pathname === href || (pathname.startsWith('/admin/courses/') && !pathname.includes('/edit') && !pathname.includes('/new'));
+            active = pathname === href || pathname.startsWith('/admin/curriculum/');
           } else if (label === 'Courses') {
-            active = pathname === href || (pathname.startsWith('/admin/courses/') && (pathname.includes('/edit') || pathname.includes('/new')));
+            active = pathname === href || pathname.startsWith('/admin/courses/');
           } else {
             active = pathname === href || pathname.startsWith(`${href}/`);
           }
