@@ -76,12 +76,12 @@ Make sure you have the following installed on your machine:
    # PostgreSQL Configuration
    SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5433/lms
    SPRING_DATASOURCE_USERNAME=postgres
-   SPRING_DATASOURCE_PASSWORD=nitinverma
+   SPRING_DATASOURCE_PASSWORD=xxxxxx
 
    # Cloudinary Credentials
-   CLOUDINARY_CLOUD_NAME=dnplvm1es
-   CLOUDINARY_API_KEY=658889419438443
-   CLOUDINARY_API_SECRET=b1YxF7d9kO3UI6rSXDqGXJHNGn8
+   CLOUDINARY_CLOUD_NAME=dnplxxx
+   CLOUDINARY_API_KEY=658xxxxx
+   CLOUDINARY_API_SECRET=b1YxF7d9kO3UI6rSxxx
    ```
 
 4. Build and run the Spring Boot application:
