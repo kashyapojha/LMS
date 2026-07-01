@@ -89,17 +89,35 @@ graph TD
 
 ```mermaid
 graph TD
-    User([User clicks Edit Icon]) -->|Navigate /admin/categories/:id/edit| Router["frontend/src/App.jsx"]
+    User([User clicks Edit Icon]) -->|Navigate to admin/categories/id/edit| Router["frontend/src/App.jsx"]
+
     Router -->|Mounts UI| Form["frontend/src/features/category/CategoryForm.jsx"]
-    Form -->|Cick Save Changes| Hook["frontend/src/hooks/useCatalog.jsx - updateCategory(id, payload)"]
-    Hook -->|Axios client| Api["frontend/src/services/api.js - api.put('/categories/{id}')"]
-    Api -->|PUT /api/categories/{id}| Controller["backend/src/main/java/.../CategoryController.java - updateCategory()"]
-    Controller -->|Service| Service["backend/src/main/java/.../CategoryServiceImpl.java - update()"]
-    Service -->|Fetch & update entity| Mapper["backend/src/main/java/.../CategoryMapper.java - updateEntity()"]
-    Mapper -->|Repository| Repo["backend/src/main/java/.../CategoryRepository.java - save()"]
-    Repo -->|SQL UPDATE| DB[(DB categories)]
-    DB --> Repo --> Service --> Controller -->|HTTP 200 JSON| Api
-    Api --> Hook -->|Redirect| Router
+
+    Form -->|Click Save Changes| Hook["frontend/src/hooks/useCatalog.jsx - updateCategory"]
+
+    Hook -->|mapCategoryToBackendPayload| Map["frontend/src/hooks/useCatalog.jsx - mapCategoryToBackendPayload"]
+
+    Map -->|Axios client| Api["frontend/src/services/api.js"]
+
+    Api -->|PUT api/categories/id| Controller["backend/src/main/java/CategoryController.java"]
+
+    Controller -->|Service| Service["backend/src/main/java/CategoryServiceImpl.java"]
+
+    Service -->|Fetch and update entity| Mapper["backend/src/main/java/CategoryMapper.java"]
+
+    Mapper -->|Repository| Repo["backend/src/main/java/CategoryRepository.java"]
+
+    Repo -->|SQL UPDATE| DB[(Categories DB)]
+
+    DB --> Repo
+    Repo --> Service
+    Service --> Controller
+    Controller -->|HTTP 200 JSON| Api
+    Api --> Hook
+
+    Hook -->|Refresh data| Refresh["Re-fetch categories and courses"]
+
+    Refresh -->|Redirect| Router
 ```
 
 #### Step-by-Step Execution Sequence
