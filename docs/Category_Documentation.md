@@ -135,14 +135,25 @@ graph TD
 ```mermaid
 graph TD
     User([User clicks Delete Icon]) -->|Confirmation dialog| Dashboard["frontend/src/features/category/CategoryManagement.jsx"]
-    Dashboard -->|Cick Confirm| Hook["frontend/src/hooks/useCatalog.jsx - deleteCategory(id)"]
-    Hook -->|Axios client| Api["frontend/src/services/api.js - api.delete('/categories/{id}')"]
-    Api -->|DELETE /api/categories/{id}| Controller["backend/src/main/java/.../CategoryController.java - deleteCategory()"]
-    Controller -->|Service| Service["backend/src/main/java/.../CategoryServiceImpl.java - delete()"]
-    Service -->|Repository| Repo["backend/src/main/java/.../CategoryRepository.java - delete()"]
+
+    Dashboard -->|Click Confirm| Hook["frontend/src/hooks/useCatalog.jsx - deleteCategory"]
+
+    Hook -->|Axios client| Api["frontend/src/services/api.js"]
+
+    Api -->|DELETE /api/categories/id| Controller["backend/src/main/java/.../CategoryController.java"]
+
+    Controller -->|Service| Service["backend/src/main/java/.../CategoryServiceImpl.java"]
+
+    Service -->|Repository| Repo["backend/src/main/java/.../CategoryRepository.java"]
+
     Repo -->|SQL DELETE| DB[(DB categories)]
-    DB --> Repo --> Service --> Controller -->|HTTP 200 JSON| Api
-    Api --> Hook -->|Re-render UI| Dashboard
+
+    DB --> Repo
+    Repo --> Service
+    Service --> Controller
+    Controller -->|HTTP 200 JSON| Api
+    Api --> Hook
+    Hook -->|Re-render UI| Dashboard
 ```
 
 #### Step-by-Step Execution Sequence
