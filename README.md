@@ -8,11 +8,21 @@ A full-stack Learning Management System (LMS) with a Spring Boot backend, Postgr
 
 ```
 ├── backend/   # Spring Boot Application (Java 17, Maven)
-└── frontend/  # React + Vite Client Application (Tailwind CSS, HSL Theming)
+├── frontend/  # React + Vite Client Application (Tailwind CSS, HSL Theming)
+└── docs/      # Module Reference & Flow Documentation
 ```
 
 ---
 
+## 📖 Module Reference Documentation
+
+Detailed architectural overviews, database fields, REST API contracts, and frontend-to-backend request data flows are documented separately for each module:
+
+*   **Category Module:** docs/Category_Documentation.md (Database fields, category cards rendering, dashboard logic, creation/edition flows, and delete triggers).
+*   **Course Module:** docs/Course_Documentation.md (Course specifications, programmatic SEO attributes, and course creation pipelines).
+*   **Curriculum Module:** docs/Curriculum_Documentation.md (Module creation, Submodule customization, and Content block uploads like PDF/PPT/Code/Video).
+
+---
 ## 🛠️ Tech Stack & Key Features
 
 - **Spring Boot Backend**:
