@@ -616,7 +616,7 @@ export default function CourseBuilderWorkspace({ course, catalog, showToast }) {
       <div className="sticky top-0 z-20 border-b border-brand-border dark:border-slate-800 bg-white dark:bg-slate-900">
         <div className="flex items-center justify-between px-6 py-4">
           <div className="flex items-center gap-2 text-sm font-semibold text-brand-text-secondary dark:text-slate-400">
-            <span className="text-brand-text-secondary">Curriculum</span>
+            <Link to="/admin/courses" className="text-brand-text-secondary hover:text-brand-text-primary transition-colors">Courses</Link>
             <ChevronRight className="h-3.5 w-3.5 text-brand-text-secondary" />
             <span className="text-brand-text-secondary truncate max-w-[150px]">
               {course.title}

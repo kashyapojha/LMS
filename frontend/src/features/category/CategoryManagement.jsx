@@ -84,6 +84,47 @@ export default function CategoryManagement() {
 
   const { data, total, totalPages } = paginate(filtered, page, pageSize);
 
+  const emptyStateConfig = useMemo(() => {
+    if (search) {
+      return {
+        title: "No matching categories found",
+        description: `We couldn't find any categories matching "${search}".`,
+        actionLabel: null,
+        onAction: null
+      };
+    }
+    switch (statusFilter) {
+      case 'active':
+        return {
+          title: "No active categories found",
+          description: "There are currently no active categories. You can create one or change an existing category to active.",
+          actionLabel: "Create Category",
+          onAction: () => navigate('/admin/categories/new')
+        };
+      case 'inactive':
+        return {
+          title: "No inactive categories found",
+          description: "There are currently no inactive categories.",
+          actionLabel: null,
+          onAction: null
+        };
+      case 'deleted':
+        return {
+          title: "No deleted categories found",
+          description: "There are currently no deleted categories in the trash.",
+          actionLabel: null,
+          onAction: null
+        };
+      default:
+        return {
+          title: "No categories found",
+          description: "Create your first category to organize courses.",
+          actionLabel: "Create Category",
+          onAction: () => navigate('/admin/categories/new')
+        };
+    }
+  }, [statusFilter, search, navigate]);
+
   if (!hydrated) return null;
 
   return (
@@ -174,10 +215,10 @@ export default function CategoryManagement() {
         {data.length === 0 ? (
           <EmptyState
             icon={Tag}
-            title="No categories found"
-            description="Create your first category to organize courses."
-            actionLabel="Create Category"
-            onAction={() => navigate('/admin/categories/new')}
+            title={emptyStateConfig.title}
+            description={emptyStateConfig.description}
+            actionLabel={emptyStateConfig.actionLabel}
+            onAction={emptyStateConfig.onAction}
           />
         ) : view === 'grid' ? (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

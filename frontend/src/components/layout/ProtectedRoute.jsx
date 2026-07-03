@@ -18,7 +18,7 @@ export default function ProtectedRoute({ children }) {
 
   if (!isAuthenticated) {
     // Redirect to the login page and save the current location they tried to go to
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/" state={{ from: location }} replace />;
   }
 
   return children;
