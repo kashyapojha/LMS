@@ -66,4 +66,39 @@ public class DashboardController {
         ApiResponse response = new ApiResponse("Training effectiveness retrieved successfully", data);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/learning-pillars")
+    public ResponseEntity<ApiResponse> getLearningPillars(DashboardFilterRequestDTO filter) {
+        LearningPillarsDTO data = dashboardService.getLearningPillars(filter);
+        ApiResponse response = new ApiResponse("Learning pillars retrieved successfully", data);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/flagship-programs")
+    public ResponseEntity<ApiResponse> getFlagshipPrograms(DashboardFilterRequestDTO filter) {
+        FlagshipProgramsDTO data = dashboardService.getFlagshipPrograms(filter);
+        ApiResponse response = new ApiResponse("Flagship programs retrieved successfully", data);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/learning-champions")
+    public ResponseEntity<ApiResponse> getLearningChampions(DashboardFilterRequestDTO filter) {
+        LearningChampionsDTO data = dashboardService.getLearningChampions(filter);
+        ApiResponse response = new ApiResponse("Learning champions retrieved successfully", data);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/project-investment")
+    public ResponseEntity<ApiResponse> getProjectInvestment(DashboardFilterRequestDTO filter) {
+        ProjectInvestmentDTO data = dashboardService.getProjectInvestment(filter);
+        ApiResponse response = new ApiResponse("Project investment retrieved successfully", data);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/fresher-journey")
+    public ResponseEntity<ApiResponse> getFresherJourney(DashboardFilterRequestDTO filter) {
+        FresherJourneyDTO data = dashboardService.getFresherJourney(filter);
+        ApiResponse response = new ApiResponse("Fresher journey retrieved successfully", data);
+        return ResponseEntity.ok(response);
+    }
 }

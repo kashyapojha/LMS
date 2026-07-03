@@ -17,4 +17,14 @@ public interface DashboardService {
     DashboardTrendsDTO getTrends(DashboardFilterRequestDTO filter);
 
     EffectivenessDTO getEffectiveness(DashboardFilterRequestDTO filter);
+
+    LearningPillarsDTO getLearningPillars(DashboardFilterRequestDTO filter);
+
+    FlagshipProgramsDTO getFlagshipPrograms(DashboardFilterRequestDTO filter);
+
+    LearningChampionsDTO getLearningChampions(DashboardFilterRequestDTO filter);
+
+    ProjectInvestmentDTO getProjectInvestment(DashboardFilterRequestDTO filter);
+
+    FresherJourneyDTO getFresherJourney(DashboardFilterRequestDTO filter);
 }
