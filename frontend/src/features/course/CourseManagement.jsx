@@ -71,12 +71,6 @@ export default function CourseManagement({ categoryId = null }) {
 
   const { data, total, totalPages } = paginate(filtered, page, pageSize);
 
-  const getCategoryName  = (id) => categories.find((c) => c.id === id)?.name  || '—';
-  const getCategoryColor = (id) => categories.find((c) => c.id === id)?.color || '#6c1d5f';
-
-  const activeCourses   = baseCourses.filter((c) => c.status !== 'archived').length;
-  const publishedCourses = baseCourses.filter((c) => c.status === 'published').length;
-
   const handleCreate = () => {
     if (!categories?.length) {
       showToast('Create a category first before adding a course.', 'error');
@@ -84,6 +78,54 @@ export default function CourseManagement({ categoryId = null }) {
     }
     navigate('/admin/courses/new');
   };
+
+  const emptyStateConfig = useMemo(() => {
+    if (search) {
+      return {
+        title: "No matching courses found",
+        description: `We couldn't find any courses matching "${search}".`,
+        actionLabel: null,
+        onAction: null
+      };
+    }
+    if (statusFilter !== 'all') {
+      return {
+        title: `No ${statusFilter} courses found`,
+        description: `There are currently no courses marked as ${statusFilter}.`,
+        actionLabel: statusFilter !== 'archived' ? "Create Course" : null,
+        onAction: statusFilter !== 'archived' ? handleCreate : null
+      };
+    }
+    if (difficultyFilter !== 'all') {
+      return {
+        title: `No ${difficultyFilter} courses found`,
+        description: `There are currently no courses found for the ${difficultyFilter} difficulty level.`,
+        actionLabel: "Create Course",
+        onAction: handleCreate
+      };
+    }
+    if (categoryFilter !== 'all') {
+      const catName = categories.find(c => String(c.id) === categoryFilter)?.name || 'this category';
+      return {
+        title: `No courses in ${catName}`,
+        description: `There are currently no courses assigned to ${catName}.`,
+        actionLabel: "Create Course",
+        onAction: handleCreate
+      };
+    }
+    return {
+      title: "No courses found",
+      description: "Create a course to get started.",
+      actionLabel: "Create Course",
+      onAction: handleCreate
+    };
+  }, [search, statusFilter, difficultyFilter, categoryFilter, categories, handleCreate]);
+
+  const getCategoryName  = (id) => categories.find((c) => c.id === id)?.name  || '—';
+  const getCategoryColor = (id) => categories.find((c) => c.id === id)?.color || '#6c1d5f';
+
+  const activeCourses   = baseCourses.filter((c) => c.status !== 'archived').length;
+  const publishedCourses = baseCourses.filter((c) => c.status === 'published').length;
 
   if (!hydrated) return null;
 
@@ -189,10 +231,10 @@ export default function CourseManagement({ categoryId = null }) {
         {data.length === 0 ? (
           <EmptyState
             icon={Plus}
-            title="No courses found"
-            description="Create a course to get started."
-            actionLabel="Create Course"
-            onAction={handleCreate}
+            title={emptyStateConfig.title}
+            description={emptyStateConfig.description}
+            actionLabel={emptyStateConfig.actionLabel}
+            onAction={emptyStateConfig.onAction}
           />
         ) : (
           <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">

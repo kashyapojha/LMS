@@ -6,10 +6,9 @@ import { cn } from '@/utils';
 import { useAuth } from '@/hooks/useAuth';
 
 const NAV_ITEMS = [
-  { href: '/admin/courses',    label: 'Courses',      icon: BookOpen },
-  { href: '/admin/categories', label: 'Categories',   icon: Tag },
-  { href: '/admin/curriculum', label: 'Curriculum',   icon: Layers },
   { href: '/admin/dashboard',  label: 'Dashboard',    icon: LayoutDashboard },
+  { href: '/admin/categories', label: 'Categories',   icon: Tag },
+  { href: '/admin/courses',    label: 'Courses',      icon: BookOpen },
 ];
 
 export default function Sidebar() {

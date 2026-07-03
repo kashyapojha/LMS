@@ -150,7 +150,7 @@ export default function Header({ title, subtitle }) {
             type: 'course',
             title: course.title,
             subtitle: `${course.technology} · ${course.difficulty}`,
-            link: `/admin/curriculum/${course.id}`,
+            link: `/admin/courses/${course.id}/builder`,
             icon: BookOpen,
             badge: 'Course'
           });
@@ -212,7 +212,7 @@ export default function Header({ title, subtitle }) {
           type: 'media',
           title: file.title,
           subtitle: `File inside Course: ${file.courseName}`,
-          link: `/admin/curriculum/${file.courseId}`,
+          link: `/admin/courses/${file.courseId}/builder`,
           icon: FileText,
           badge: file.type.toUpperCase()
         });

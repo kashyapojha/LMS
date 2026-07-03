@@ -31,9 +31,7 @@ export default function CourseCard({ course, categoryName, categoryColor = '#6c1
   const isPublished = course.status === 'published';
   const isActive = course.status !== 'archived';
 
-  const targetUrl = isCurriculumView
-    ? `/admin/curriculum/${course.id}`
-    : `/admin/courses/${course.id}/edit`;
+  const targetUrl = `/admin/courses/${course.id}/builder`;
 
   const handleCardClick = (e) => {
     if (e.target.closest('button') || e.target.closest('a')) {
@@ -143,7 +141,7 @@ export default function CourseCard({ course, categoryName, categoryColor = '#6c1
 
           {isCurriculumView ? (
             <Link
-              to={`/admin/curriculum/${course.id}`}
+              to={`/admin/courses/${course.id}/builder`}
               className="ml-auto flex items-center gap-0.5 text-xs font-bold text-accent-teal-dark hover:underline"
             >
               Manage →
@@ -189,7 +187,7 @@ export function CourseRow({ course, index, categoryName, categoryColor = '#6c1d5
     <tr className="border-b border-brand-border transition-colors hover:bg-brand-surface/40">
       <td className="px-4 py-4 text-sm text-brand-text-secondary">{index}</td>
       <td className="px-4 py-4">
-        <Link to={`/admin/courses/${course.id}/edit`} className="flex items-center gap-3">
+        <Link to={`/admin/courses/${course.id}/builder`} className="flex items-center gap-3">
           <img
             src={course.thumbnail}
             alt=""
