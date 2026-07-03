@@ -55,7 +55,7 @@ export default function StudentLayout({ children }) {
   return (
     <div className="min-h-screen bg-brand-surface dark:bg-[#0B1120] text-brand-text-primary dark:text-[#F8FAFC] transition-colors duration-300">
       <StudentSidebar />
-      <div style={{ paddingLeft: 270 }}>
+      <div style={{ paddingLeft: 220 }}>
         <StudentHeader title={title} subtitle={subtitle} />
         <main className="min-h-screen">{children}</main>
       </div>

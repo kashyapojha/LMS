@@ -1,13 +1,11 @@
 import { motion } from 'framer-motion';
 import { MessageCircleMore, Search, ThumbsUp, BadgeCheck } from 'lucide-react';
-import PageHeader from '@/components/layout/PageHeader';
 import Button from '@/components/ui/Button';
 import { discussions } from '@/services/studentMockData';
 
 export default function StudentDiscussionPage() {
   return (
     <div className="min-h-screen bg-brand-surface/60 p-6 lg:p-8">
-      <PageHeader title="Discussion Forum" subtitle="Ask questions, share insights, and get guidance from peers and instructors." />
       <div className="mt-6 flex items-center gap-3 rounded-3xl border border-brand-border/70 bg-white p-4 shadow-card dark:border-slate-800 dark:bg-slate-900">
         <Search className="h-4 w-4 text-brand-text-secondary" />
         <input placeholder="Search discussions" className="w-full bg-transparent text-sm outline-none" />

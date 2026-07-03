@@ -3,7 +3,6 @@
 import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Search, Filter, LayoutGrid, List, ArrowRight, BookOpen, Clock, Award, PlayCircle } from 'lucide-react';
-import PageHeader from '@/components/layout/PageHeader';
 import Button from '@/components/ui/Button';
 import { useCatalog } from '@/hooks/useCatalog';
 import { Link } from 'react-router-dom';
@@ -30,10 +29,6 @@ export default function StudentCoursesPage() {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#0B1120] p-6 lg:p-8 text-slate-800 dark:text-[#F8FAFC]">
-      <PageHeader
-        title="My Courses & Learning Paths"
-        subtitle="Explore real-time enterprise training courses and skill programs published by your organization."
-      />
 
       {/* Filter and View Control Bar */}
       <div className="mt-6 flex flex-col gap-4 rounded-3xl border border-slate-200 dark:border-[#334155] bg-white dark:bg-[#1E293B] p-4 shadow-sm lg:flex-row lg:items-center lg:justify-between">

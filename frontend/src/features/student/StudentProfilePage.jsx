@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
 import { Camera, Mail, Phone, MapPin, Briefcase, IdCard, Edit3, Lock, Sparkles } from 'lucide-react';
-import PageHeader from '@/components/layout/PageHeader';
 import Button from '@/components/ui/Button';
 import { studentProfile } from '@/services/studentMockData';
 
@@ -16,7 +15,6 @@ function getInitials(name) {
 export default function StudentProfilePage() {
   return (
     <div className="min-h-screen bg-brand-surface/60 p-6 lg:p-8">
-      <PageHeader title="Profile" subtitle="Keep your student profile up to date for a better learning experience." />
       <div className="mt-6 grid gap-6 xl:grid-cols-[0.75fr_1.25fr]">
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="rounded-3xl border border-brand-border/70 bg-white p-6 shadow-card dark:border-slate-800 dark:bg-slate-900">
           <div className="flex flex-col items-center text-center">

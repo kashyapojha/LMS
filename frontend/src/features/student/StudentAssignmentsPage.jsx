@@ -3,7 +3,6 @@
 import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle, UploadCloud, Calendar, FileText, Award, X, Send } from 'lucide-react';
-import PageHeader from '@/components/layout/PageHeader';
 import Button from '@/components/ui/Button';
 import { useCatalog } from '@/hooks/useCatalog';
 import { useToast } from '@/hooks/useToast';
@@ -55,10 +54,7 @@ export default function StudentAssignmentsPage() {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#0B1120] p-6 lg:p-8 text-slate-800 dark:text-[#F8FAFC]">
-      <PageHeader
-        title="Project Assignments & Capstones"
-        subtitle="Submit practical projects and hands-on deliverables created by your instructors."
-      />
+
 
       {liveAssignments.length === 0 ? (
         <div className="mt-12 text-center p-12 rounded-3xl border border-dashed border-slate-200 dark:border-[#334155] bg-white dark:bg-[#1E293B] max-w-md mx-auto">

@@ -1,11 +1,9 @@
 import { motion } from 'framer-motion';
 import { TrendingUp, Clock3, Trophy, BarChart3, Target } from 'lucide-react';
-import PageHeader from '@/components/layout/PageHeader';
 
 export default function StudentProgressPage() {
   return (
     <div className="min-h-screen bg-brand-surface/60 p-6 lg:p-8">
-      <PageHeader title="Progress Tracker" subtitle="Monitor your learning hours, course completion, and assessment performance." />
       <div className="mt-6 grid gap-6 xl:grid-cols-2">
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="rounded-3xl border border-brand-border/70 bg-white p-6 shadow-card dark:border-slate-800 dark:bg-slate-900">
           <div className="flex items-center gap-3"><TrendingUp className="h-5 w-5 text-brand-primary" /><h3 className="text-xl font-bold text-brand-text-primary dark:text-slate-100">Course Completion</h3></div>

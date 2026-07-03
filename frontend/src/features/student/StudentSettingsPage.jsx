@@ -1,12 +1,10 @@
 import { motion } from 'framer-motion';
-import { Bell, Globe, Moon, Shield, LogOut } from 'lucide-react';
-import PageHeader from '@/components/layout/PageHeader';
+import { Bell, Globe, Moon, Shield, LogOut, Lock } from 'lucide-react';
 import Button from '@/components/ui/Button';
 
 export default function StudentSettingsPage() {
   return (
     <div className="min-h-screen bg-brand-surface/60 p-6 lg:p-8">
-      <PageHeader title="Settings" subtitle="Control your experience and privacy preferences." />
       <div className="mt-6 grid gap-6 xl:grid-cols-2">
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="rounded-3xl border border-brand-border/70 bg-white p-6 shadow-card dark:border-slate-800 dark:bg-slate-900">
           <h3 className="text-xl font-bold text-brand-text-primary dark:text-slate-100">Preferences</h3>

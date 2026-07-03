@@ -4,7 +4,6 @@ import { useState, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { PlayCircle, FileText, CheckCircle2, ArrowLeft, Clock, BookOpen, Layers, Download, ExternalLink, HelpCircle, CheckCircle, Film } from 'lucide-react';
-import PageHeader from '@/components/layout/PageHeader';
 import Button from '@/components/ui/Button';
 import { useCatalog } from '@/hooks/useCatalog';
 
@@ -45,7 +44,7 @@ export default function StudentCourseDetailsPage() {
         <span className="text-xs font-bold text-slate-400">My Courses / {course.title}</span>
       </div>
 
-      <PageHeader title={course.title} subtitle={course.description || 'Enterprise course learning syllabus and module details.'} />
+
 
       <div className="mt-6 grid gap-6 xl:grid-cols-[340px_1fr]">
         

@@ -43,11 +43,11 @@ export default function StudentHeader({ title, subtitle }) {
     <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200 dark:border-[#334155] bg-white/95 dark:bg-[#111827]/90 backdrop-blur-md px-6 transition-colors duration-200">
       <div>
         {title && (
-          <h1 className="text-base font-black text-slate-800 dark:text-[#F8FAFC] flex items-center gap-2">
+          <h1 className="text-lg font-bold text-brand-primary dark:text-slate-100 flex items-center gap-2">
             {title}
           </h1>
         )}
-        {subtitle && <p className="text-[11px] font-semibold text-slate-500 dark:text-[#CBD5E1]">{subtitle}</p>}
+        {subtitle && <p className="text-xs text-brand-text-secondary dark:text-slate-400">{subtitle}</p>}
       </div>
 
       <div className="flex items-center gap-3">

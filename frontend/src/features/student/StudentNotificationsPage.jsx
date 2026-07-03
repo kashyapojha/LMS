@@ -1,13 +1,11 @@
 import { motion } from 'framer-motion';
 import { BellRing, CheckCheck, Trash2 } from 'lucide-react';
-import PageHeader from '@/components/layout/PageHeader';
 import Button from '@/components/ui/Button';
 import { notifications } from '@/services/studentMockData';
 
 export default function StudentNotificationsPage() {
   return (
     <div className="min-h-screen bg-brand-surface/60 p-6 lg:p-8">
-      <PageHeader title="Notifications" subtitle="Stay updated with course, assignment, quiz, and system updates." />
       <div className="mt-6 flex items-center justify-between rounded-3xl border border-brand-border/70 bg-white p-4 shadow-card dark:border-slate-800 dark:bg-slate-900">
         <div className="flex items-center gap-2 text-sm font-semibold text-brand-text-primary"><BellRing className="h-4 w-4 text-brand-primary" /> {notifications.length} notifications</div>
         <div className="flex gap-2">
