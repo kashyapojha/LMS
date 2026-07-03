@@ -18,12 +18,10 @@ export default function Logo({ className, iconOnly = false, variant = 'light' })
   const companyName = branding?.companyName || 'Xebia LMS';
   
   // Resolve logos to assets provided
-  let logoUrl = isDark 
-    ? (branding?.darkModeLogo || branding?.sidebarLogo || '/assets/Logo-White.png') 
-    : (branding?.lightModeLogo || branding?.headerLogo || branding?.websiteLogo || '/assets/Logo-Purple.png');
+  let logoUrl = branding?.lightModeLogo || branding?.headerLogo || branding?.websiteLogo || '/assets/Logo-Purple.png';
 
-  if (!logoUrl || logoUrl.includes('xebia-logo.svg')) {
-    logoUrl = isDark ? '/assets/Logo-White.png' : '/assets/Logo-Purple.png';
+  if (!logoUrl || logoUrl.includes('xebia-logo.svg') || logoUrl.includes('Logo-White.png') || logoUrl.includes('Logo-White')) {
+    logoUrl = '/assets/Logo-Purple.png';
   }
 
   return (

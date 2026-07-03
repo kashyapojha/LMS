@@ -59,12 +59,6 @@ export default function App() {
             </RouteTitle>
           } />
 
-          <Route path="/login" element={
-            <RouteTitle title="Login">
-              <LoginPage />
-            </RouteTitle>
-          } />
-
           <Route path="/admin/login" element={
             <RouteTitle title="Admin Login">
               <LoginPage />
