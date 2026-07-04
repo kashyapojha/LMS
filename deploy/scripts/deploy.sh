@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-DEPLOY_DIR="${DEPLOY_PATH:-/opt/xebia-lms}"
+DEPLOY_DIR="${DEPLOY_PATH:-/home/ubuntu/xebia-lms}"
 cd "$DEPLOY_DIR"
 
 : "${IMAGE_TAG:?IMAGE_TAG must be set}"

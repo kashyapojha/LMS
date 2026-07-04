@@ -2,7 +2,7 @@
 # One-time setup on the AWS EC2 instance (Ubuntu 22.04 / Amazon Linux 2023).
 set -euo pipefail
 
-DEPLOY_DIR="${1:-/opt/xebia-lms}"
+DEPLOY_DIR="${1:-/home/ubuntu/xebia-lms}"
 
 echo "==> Installing Docker..."
 if command -v apt-get &>/dev/null; then

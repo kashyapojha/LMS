@@ -147,7 +147,7 @@ jobs:
     environment: production
     env:
       SSH_PORT: ${{ secrets.SSH_PORT != '' && secrets.SSH_PORT || '22' }}
-      DEPLOY_PATH: ${{ secrets.DEPLOY_PATH != '' && secrets.DEPLOY_PATH || '/opt/xebia-lms' }}
+      DEPLOY_PATH: ${{ secrets.DEPLOY_PATH != '' && secrets.DEPLOY_PATH || '/home/ubuntu/xebia-lms' }}
 
     steps:
       - name: Checkout repository

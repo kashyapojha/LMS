@@ -39,9 +39,9 @@ curl -fsSL https://raw.githubusercontent.com/<your-org>/<your-repo>/main/deploy/
 
 Or copy `deploy/scripts/server-setup.sh` manually and run it.
 
-Edit `/opt/xebia-lms/.env` with your database and Cloudinary credentials.
+Edit `/home/ubuntu/xebia-lms/.env` with your database and Cloudinary credentials.
 
-Copy `docker-compose.yml` and `deploy/scripts/deploy.sh` into `/opt/xebia-lms` (the CI pipeline uploads these on every deploy).
+Copy `docker-compose.yml` and `deploy/scripts/deploy.sh` into `/home/ubuntu/xebia-lms` (the CI pipeline uploads these on every deploy).
 
 ## 2. Docker Hub
 
@@ -64,7 +64,7 @@ Add these in **Settings → Secrets and variables → Actions**:
 | `SSH_USER` | `ubuntu` (Ubuntu) or `ec2-user` (Amazon Linux) |
 | `SSH_PRIVATE_KEY` | Full contents of your `.pem` key file |
 | `SSH_PORT` | Optional, default `22` |
-| `DEPLOY_PATH` | Optional, default `/opt/xebia-lms` |
+| `DEPLOY_PATH` | Optional, default `/home/ubuntu/xebia-lms` |
 
 App secrets (`POSTGRES_PASSWORD`, Cloudinary keys, etc.) live in the **server** `.env` file at `${DEPLOY_PATH}/.env`, not in GitHub.
 
@@ -98,7 +98,7 @@ App secrets (`POSTGRES_PASSWORD`, Cloudinary keys, etc.) live in the **server** 
 ## 6. Manual Deploy (on server)
 
 ```bash
-cd /opt/xebia-lms
+cd /home/ubuntu/xebia-lms
 export IMAGE_TAG=a1b2c3d        # specific build tag
 export DOCKERHUB_USERNAME=your-user
 export DOCKERHUB_TOKEN=your-token
@@ -107,7 +107,7 @@ export DOCKERHUB_TOKEN=your-token
 
 ## 7. Using Amazon RDS (optional)
 
-To use RDS instead of the bundled Postgres container, set in `/opt/xebia-lms/.env`:
+To use RDS instead of the bundled Postgres container, set in `/home/ubuntu/xebia-lms/.env`:
 
 ```env
 SPRING_DATASOURCE_URL=jdbc:postgresql://your-rds-endpoint:5432/lms
