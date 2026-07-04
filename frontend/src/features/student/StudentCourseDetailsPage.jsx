@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { PlayCircle, FileText, CheckCircle2, ArrowLeft, Clock, BookOpen, Layers, Download, ExternalLink, HelpCircle, CheckCircle, Film } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import { useCatalog } from '@/hooks/useCatalog';
+import { getVideoEmbedInfo } from '@/utils';
 
 export default function StudentCourseDetailsPage() {
   const { courseId } = useParams();
@@ -121,14 +122,31 @@ export default function StudentCourseDetailsPage() {
                     </div>
 
                     {/* Video Player */}
-                    {blk.type === 'video' && blk.fileUrl && (
-                      <div className="rounded-xl overflow-hidden aspect-video bg-black shadow-md">
-                        <video controls className="w-full h-full object-contain">
-                          <source src={blk.fileUrl} type="video/mp4" />
-                          Your browser does not support video playback.
-                        </video>
-                      </div>
-                    )}
+                    {blk.type === 'video' && blk.fileUrl && (() => {
+                      const { kind, embedUrl } = getVideoEmbedInfo(blk.fileUrl);
+                      if (kind === 'youtube') {
+                        return (
+                          <div className="rounded-xl overflow-hidden aspect-video bg-black shadow-md">
+                            <iframe
+                              src={embedUrl}
+                              title={blk.title || 'Lesson video'}
+                              className="w-full h-full"
+                              frameBorder="0"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                            />
+                          </div>
+                        );
+                      }
+                      return (
+                        <div className="rounded-xl overflow-hidden aspect-video bg-black shadow-md">
+                          <video controls className="w-full h-full object-contain">
+                            <source src={blk.fileUrl} />
+                            Your browser does not support video playback.
+                          </video>
+                        </div>
+                      );
+                    })()}
 
                     {/* Text Body */}
                     {blk.type === 'text' && (

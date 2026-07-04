@@ -92,6 +92,34 @@ export function getTechLogoUrl(technology) {
   return `https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${icon}/${icon}-original.svg`;
 }
 
+// Recognizes youtube.com/watch, youtu.be, youtube.com/shorts, and already-embedded
+// youtube.com/embed URLs, and returns an embeddable URL. Anything else (Cloudinary
+// links, direct .mp4, etc.) is treated as a direct/native video source instead.
+export function getVideoEmbedInfo(url) {
+  if (!url || typeof url !== 'string') return { kind: 'none' };
+  const trimmed = url.trim();
+
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=|youtube\.com\/live\/)([a-zA-Z0-9_-]{11})/,
+    /youtu\.be\/([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
+  ];
+
+  for (const pattern of patterns) {
+    const match = trimmed.match(pattern);
+    if (match) {
+      return { kind: 'youtube', embedUrl: `https://www.youtube.com/embed/${match[1]}` };
+    }
+  }
+
+  if (/^https?:\/\/.+/.test(trimmed)) {
+    return { kind: 'direct', embedUrl: trimmed };
+  }
+
+  return { kind: 'invalid' };
+}
+
 export function countCourseStats(course) {
   const modules = course?.modules || [];
   const submodules = modules.flatMap((m) => m.submodules || []);

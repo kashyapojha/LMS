@@ -6,7 +6,7 @@ import {
   Plus, ChevronRight, ChevronDown, ChevronUp, GripVertical, Pencil, Trash2, Save, X,
   Cloud, Lock, Sun, Moon, ArrowLeft, Link as LinkIcon, CheckCircle, FileText, UploadCloud, AlertCircle
 } from 'lucide-react';
-import { cn } from '@/utils';
+import { cn, getVideoEmbedInfo } from '@/utils';
 import Button from '@/components/ui/Button';
 import { ConfirmationDialog } from '@/components/ui/Modal';
 import { Link } from 'react-router-dom';
@@ -1572,12 +1572,44 @@ export default function CourseBuilderWorkspace({ course, catalog, showToast }) {
                           />
                         </div>
                       </div>
-                      <div className="rounded-xl border border-brand-border dark:border-slate-800 flex items-center justify-center aspect-video bg-brand-surface dark:bg-slate-800/40">
-                        <div className="text-center text-brand-text-secondary space-y-2">
-                          <span className="inline-block p-3 rounded-full bg-brand-primary/10 text-brand-primary">📹</span>
-                          <p className="text-xs font-semibold">Video preview will appear here</p>
-                        </div>
-                      </div>
+                      {(() => {
+                        const { kind, embedUrl } = getVideoEmbedInfo(contentForm.fileUrl);
+                        if (kind === 'youtube') {
+                          return (
+                            <div className="rounded-xl overflow-hidden aspect-video bg-black border border-brand-border dark:border-slate-800">
+                              <iframe
+                                key={embedUrl}
+                                src={embedUrl}
+                                title="Video preview"
+                                className="w-full h-full"
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                              />
+                            </div>
+                          );
+                        }
+                        if (kind === 'direct') {
+                          return (
+                            <div className="rounded-xl overflow-hidden aspect-video bg-black border border-brand-border dark:border-slate-800">
+                              <video key={embedUrl} controls className="w-full h-full object-contain">
+                                <source src={embedUrl} />
+                                Your browser does not support video playback.
+                              </video>
+                            </div>
+                          );
+                        }
+                        return (
+                          <div className="rounded-xl border border-brand-border dark:border-slate-800 flex items-center justify-center aspect-video bg-brand-surface dark:bg-slate-800/40">
+                            <div className="text-center text-brand-text-secondary space-y-2">
+                              <span className="inline-block p-3 rounded-full bg-brand-primary/10 text-brand-primary">📹</span>
+                              <p className="text-xs font-semibold">
+                                {kind === 'invalid' ? "That doesn't look like a valid video URL" : 'Video preview will appear here'}
+                              </p>
+                            </div>
+                          </div>
+                        );
+                      })()}
                     </div>
                   )}
 
