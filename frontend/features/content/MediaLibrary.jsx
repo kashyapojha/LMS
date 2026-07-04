@@ -114,11 +114,15 @@ export default function MediaLibrary() {
                   {/* Aspect video Thumbnail Preview */}
                   <div className="aspect-video rounded-lg bg-brand-surface dark:bg-slate-950 flex items-center justify-center mb-3 border border-brand-border dark:border-slate-800 overflow-hidden relative">
                     {item.type === 'video' ? (
-                      <div className="w-full h-full bg-slate-900 flex items-center justify-center relative">
-                        <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.1),transparent)]" />
-                        <Video className="h-6 w-6 text-red-500 fill-red-500/10" />
-                        <span className="absolute bottom-2 right-2 text-[9px] bg-black/60 text-white px-1 rounded">MP4</span>
-                      </div>
+                      item.fileUrl ? (
+                        <video src={item.fileUrl} className="w-full h-full object-cover" muted controls />
+                      ) : (
+                        <div className="w-full h-full bg-slate-900 flex items-center justify-center relative">
+                          <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.1),transparent)]" />
+                          <Video className="h-6 w-6 text-red-500 fill-red-500/10" />
+                          <span className="absolute bottom-2 right-2 text-[9px] bg-black/60 text-white px-1 rounded">MP4</span>
+                        </div>
+                      )
                     ) : item.type === 'pdf' ? (
                       <div className="relative w-full h-full flex flex-col justify-between bg-gradient-to-br from-orange-500/10 to-red-500/10 p-3">
                         <FileText className="h-7 w-7 text-orange-500/80" />

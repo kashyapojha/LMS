@@ -14,6 +14,15 @@ public interface CloudinaryService {
      */
     Map<String, Object> uploadFile(MultipartFile file) throws IOException;
 
+        /**
+         * Uploads a file to Cloudinary by providing a remote URL. Cloudinary will fetch
+         * the resource from the URL and store it under the configured account.
+         *
+         * @param url remote resource URL
+         * @return a map containing upload details (secure_url, size, etc.) or null if not configured
+         * @throws java.io.IOException if network or Cloudinary client fails
+         */
+        Map<String, Object> uploadFromUrl(String url) throws java.io.IOException;
     /**
      * Checks if Cloudinary is fully configured and ready to be used.
      * 

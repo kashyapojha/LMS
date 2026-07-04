@@ -32,7 +32,11 @@ export default function AppLayout({ children }) {
   return (
     <div className="min-h-screen bg-brand-surface dark:bg-slate-950 transition-colors duration-300">
       <Sidebar collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)} />
-      <div className={cn("transition-all duration-300", collapsed ? "pl-[72px]" : "pl-64", "max-lg:pl-[72px]")}>
+      <div className={cn(
+        "transition-all duration-300",
+        // On large screens reserve space for the sidebar; on small screens remove left padding
+        collapsed ? 'lg:pl-[72px] pl-0' : 'lg:pl-64 pl-0'
+      )}>
         <main className="min-h-screen">{children}</main>
       </div>
     </div>

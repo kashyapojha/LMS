@@ -130,3 +130,9 @@ Make sure you have the following installed on your machine:
 | `CLOUDINARY_CLOUD_NAME` | Cloudinary Storage Account Name | `dnplvm1es` | Yes |
 | `CLOUDINARY_API_KEY` | Cloudinary API Key | `658889419438443` | Yes |
 | `CLOUDINARY_API_SECRET` | Cloudinary API Secret Token | `b1YxF7d9kO3UI6rSXDqGXJHNGn8` | Yes |
+
+---
+
+## Production deployment (AWS + Docker)
+
+For the full guide — containers, ports, Postgres/Redis, CI/CD flow, and how services connect — see **[deploy/README.md](deploy/README.md)**.

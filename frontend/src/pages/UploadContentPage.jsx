@@ -236,6 +236,21 @@ export default function UploadContentPage() {
         finalThumbnail = getAIPlaceholderImage(form.title || 'content', form.type);
       }
 
+      // If the admin pasted a remote file URL (e.g., a direct video link),
+      // ask the backend to fetch it and upload to Cloudinary so we have a canonical CDN URL.
+      let finalFileUrl = form.fileUrl;
+      if (finalFileUrl && finalFileUrl.startsWith('http') && !finalFileUrl.includes('res.cloudinary.com')) {
+        try {
+          const res = await api.post('/media/upload-by-url', { url: finalFileUrl });
+          finalFileUrl = res.data.data.url || finalFileUrl;
+          // update local state so preview shows new URL
+          setForm((prev) => ({ ...prev, fileUrl: finalFileUrl }));
+        } catch (err) {
+          console.error('Failed to upload remote URL to Cloudinary', err);
+          // proceed with original URL as fallback
+        }
+      }
+
       // 2. Map Payload
       const payload = {
         title: form.title,
@@ -244,7 +259,7 @@ export default function UploadContentPage() {
         status: form.status,
         visibility: form.visibility,
         thumbnail: finalThumbnail,
-        fileUrl: form.type === 'link' ? form.linkUrl : form.fileUrl,
+        fileUrl: form.type === 'link' ? form.linkUrl : finalFileUrl || form.fileUrl,
         fileSize: form.fileSize,
         markdown: form.type === 'notes' ? form.markdown : '',
         linkTitle: form.type === 'link' ? form.linkTitle : '',

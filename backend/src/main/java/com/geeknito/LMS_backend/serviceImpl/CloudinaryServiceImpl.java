@@ -76,4 +76,28 @@ public class CloudinaryServiceImpl implements CloudinaryService {
         }
         return result;
     }
+
+    @Override
+    public Map<String, Object> uploadFromUrl(String url) throws IOException {
+        if (!configured || cloudinary == null) {
+            return null;
+        }
+
+        Map params = ObjectUtils.asMap(
+            "resource_type", "auto"
+        );
+
+        // Cloudinary supports uploading from a remote URL by passing the URL string
+        Map rawResult = cloudinary.uploader().upload(url, params);
+
+        Map<String, Object> result = new HashMap<>();
+        if (rawResult != null) {
+            for (Object key : rawResult.keySet()) {
+                if (key != null) {
+                    result.put(key.toString(), rawResult.get(key));
+                }
+            }
+        }
+        return result;
+    }
 }

@@ -99,16 +99,25 @@ function PreviewContent({ content }) {
     case 'video':
       return (
         <div className="aspect-video rounded-xl bg-slate-950 flex flex-col items-center justify-center border border-brand-border dark:border-slate-800 relative group overflow-hidden">
-          <Video className="h-12 w-12 text-red-500 fill-red-500/10 animate-pulse" />
-          <p className="text-white/90 text-xs font-semibold mt-3">HTML5 Simulated Video Player</p>
-          <p className="text-white/60 text-[10px] mt-1">Duration: {content.duration || '05:00'}</p>
-          
-          {/* Simulated Controls */}
-          <div className="absolute bottom-0 inset-x-0 bg-black/60 px-3 py-2 flex items-center justify-between text-[10px] text-white">
-            <div className="flex gap-2"><span>▶</span> <span>🔊</span></div>
-            <div className="h-1 w-24 bg-white/30 rounded"><div className="h-full w-1/3 bg-red-650 rounded" /></div>
-            <span>{content.duration || '05:00'}</span>
-          </div>
+          {content.fileUrl ? (
+            <video
+              src={content.fileUrl}
+              controls
+              className="w-full h-full object-contain bg-black"
+              poster={content.thumbnail}
+            />
+          ) : (
+            <>
+              <Video className="h-12 w-12 text-red-500 fill-red-500/10 animate-pulse" />
+              <p className="text-white/90 text-xs font-semibold mt-3">HTML5 Simulated Video Player</p>
+              <p className="text-white/60 text-[10px] mt-1">Duration: {content.duration || '05:00'}</p>
+              <div className="absolute bottom-0 inset-x-0 bg-black/60 px-3 py-2 flex items-center justify-between text-[10px] text-white">
+                <div className="flex gap-2"><span>▶</span> <span>🔊</span></div>
+                <div className="h-1 w-24 bg-white/30 rounded"><div className="h-full w-1/3 bg-red-650 rounded" /></div>
+                <span>{content.duration || '05:00'}</span>
+              </div>
+            </>
+          )}
         </div>
       );
     case 'pdf':

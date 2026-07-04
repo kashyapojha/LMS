@@ -29,7 +29,7 @@ export default function Sidebar({ collapsed, onToggle }) {
   return (
     <aside
       className={cn(
-        'fixed left-0 top-0 z-40 flex h-screen flex-col border-r border-brand-border dark:border-slate-800 bg-white dark:bg-slate-900 transition-all duration-300',
+        'fixed left-0 top-0 z-40 h-screen flex-col border-r border-brand-border dark:border-slate-800 bg-white dark:bg-slate-900 transition-all duration-300 hidden lg:flex',
         isCollapsed ? 'w-[72px]' : 'w-64'
       )}
     >
