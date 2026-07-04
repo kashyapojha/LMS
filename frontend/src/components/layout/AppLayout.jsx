@@ -17,7 +17,7 @@ export default function AppLayout({ children }) {
   return (
     <div className="min-h-screen bg-brand-surface text-brand-text-primary transition-colors duration-200">
       <Sidebar />
-      <div style={{ paddingLeft: 220 }}>
+      <div className="lg:pl-[220px] pl-0">
         <main className="min-h-screen">{children}</main>
       </div>
     </div>

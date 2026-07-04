@@ -41,7 +41,7 @@ export default function Sidebar() {
 
   return (
     <aside
-      className="fixed left-0 top-0 z-40 flex h-screen flex-col"
+      className="fixed left-0 top-0 z-40 hidden h-screen flex-col lg:flex"
       style={{ width: 220, backgroundColor: '#4a1e47' }}
     >
       {/* Logo */}
