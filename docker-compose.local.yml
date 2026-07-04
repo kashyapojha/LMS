@@ -1,0 +1,15 @@
+# Build images locally instead of pulling from Docker Hub.
+# Usage: docker compose -f docker-compose.yml -f docker-compose.local.yml -f docker-compose.override.yml up --build
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: xebia-lms-backend:local
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: xebia-lms-frontend:local

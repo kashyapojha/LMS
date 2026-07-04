@@ -1,0 +1,15 @@
+# Local Docker development — copy to docker-compose.override.yml (auto-loaded by docker compose)
+# Exposes postgres, redis, and backend ports on localhost for debugging and native dev.
+
+services:
+  postgres:
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+
+  redis:
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+
+  backend:
+    ports:
+      - "${BACKEND_PORT:-8082}:8082"

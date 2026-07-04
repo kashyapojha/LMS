@@ -4,13 +4,15 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
-# Set env to point to Nginx's proxy endpoint
 ENV VITE_API_URL=/api
 RUN npm run build
 
 # Serve Stage
 FROM nginx:alpine
+RUN apk add --no-cache gettext
 COPY --from=builder /app/dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf.template /etc/nginx/templates/default.conf.template
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["/docker-entrypoint.sh"]

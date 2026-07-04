@@ -19,15 +19,18 @@ public class LMSBackendApplication {
                         if (eqIdx > 0) {
                             String key = line.substring(0, eqIdx).trim();
                             String value = line.substring(eqIdx + 1).trim();
-                            // Strip outer quotes if present
                             if (value.startsWith("\"") && value.endsWith("\"") && value.length() >= 2) {
                                 value = value.substring(1, value.length() - 1);
                             } else if (value.startsWith("'") && value.endsWith("'") && value.length() >= 2) {
                                 value = value.substring(1, value.length() - 1);
                             }
-                            // Set as system property (CLOUDINARY_CLOUD_NAME -> cloudinary.cloud-name etc.)
                             System.setProperty(key, value);
                             envVars.put(key, value);
+                            // Map UPPER_SNAKE env keys to Spring dot-notation system properties
+                            String springKey = toSpringPropertyKey(key);
+                            if (springKey != null) {
+                                System.setProperty(springKey, value);
+                            }
                         }
                     });
                 
@@ -53,5 +56,17 @@ public class LMSBackendApplication {
             System.err.println("Failed to parse local .env file: " + e.getMessage());
         }
         SpringApplication.run(LMSBackendApplication.class, args);
+    }
+
+    /** Converts SPRING_DATASOURCE_URL-style keys to spring.datasource.url for Spring Boot. */
+    private static String toSpringPropertyKey(String envKey) {
+        if (!envKey.contains("_")) {
+            return null;
+        }
+        String lower = envKey.toLowerCase().replace('_', '.');
+        if (lower.startsWith("spring.") || lower.startsWith("cloudinary.")) {
+            return lower;
+        }
+        return null;
     }
 }
