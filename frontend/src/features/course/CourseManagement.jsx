@@ -132,7 +132,7 @@ export default function CourseManagement({ categoryId = null }) {
   return (
     <div className="flex min-h-screen flex-col bg-brand-surface text-brand-text-primary transition-colors">
       {/* Page header bar */}
-      <div className="flex items-center justify-between px-8 py-4 bg-brand-background border-b border-brand-border">
+      <div className="flex flex-col gap-4 px-4 py-4 sm:flex-row sm:items-start sm:justify-between sm:px-8 bg-brand-background border-b border-brand-border">
         <div>
           <h1 className="text-2xl font-bold text-brand-text-primary">
             {category ? `${category.name} — Courses` : 'All Courses'}
@@ -141,7 +141,7 @@ export default function CourseManagement({ categoryId = null }) {
             {category ? `Manage courses under category ${category.name}` : 'Browse and manage all courses on the platform.'}
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2">
           {/* Quick stat pills */}
           <span
             className="rounded-full border px-3 py-1.5 text-xs font-semibold"
@@ -174,14 +174,13 @@ export default function CourseManagement({ categoryId = null }) {
       </div>
 
       {/* Content area */}
-      <div className="flex-1 px-8 py-7">
+      <div className="flex-1 px-4 py-7 sm:px-8">
 
         {/* Filters toolbar */}
-        <div className="mb-6 flex items-center gap-3">
+        <div className="mb-6 flex flex-col gap-3 lg:flex-row lg:items-center">
           {/* Search */}
           <div
-            className="flex flex-1 items-center gap-2.5 rounded-lg border bg-brand-background border-brand-border px-4 py-2.5 text-sm"
-            style={{ maxWidth: 420 }}
+            className="flex w-full items-center gap-2.5 rounded-lg border bg-brand-background border-brand-border px-4 py-2.5 text-sm sm:max-w-[420px]"
           >
             <Search className="h-[15px] w-[15px] shrink-0 text-brand-text-secondary" />
             <input
@@ -213,14 +212,16 @@ export default function CourseManagement({ categoryId = null }) {
           )}
 
           {/* Status filter */}
-          <SelectDropdown
-            value={statusFilter}
-            onChange={(v) => { setStatusFilter(v); setPage(1); }}
-            options={[
-              { value: 'all', label: 'All Status' },
-              ...COURSE_STATUSES.map((s) => ({ value: s.value, label: s.label })),
-            ]}
-          />
+          <div className="w-full sm:w-auto">
+            <SelectDropdown
+              value={statusFilter}
+              onChange={(v) => { setStatusFilter(v); setPage(1); }}
+              options={[
+                { value: 'all', label: 'All Status' },
+                ...COURSE_STATUSES.map((s) => ({ value: s.value, label: s.label })),
+              ]}
+            />
+          </div>
 
           <span className="ml-auto whitespace-nowrap text-xs font-medium text-brand-text-secondary">
             {filtered.length} courses

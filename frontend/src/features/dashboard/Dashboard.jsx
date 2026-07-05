@@ -438,7 +438,7 @@ export default function Dashboard() {
         </div>
 
         {/* Right Section (40% width - Symmetrical 2x2 Stats Cards Grid) */}
-        <div className="relative z-10 grid grid-cols-2 gap-5 lg:gap-6 w-full lg:w-[40%] shrink-0 min-w-[300px] lg:min-w-[460px]">
+        <div className="relative z-10 grid grid-cols-2 gap-5 lg:gap-6 w-full lg:w-[40%] shrink-0 min-w-0">
           {[
             { label: 'Total Learners', val: data?.executiveSummary?.employeesTrained || 120, icon: Users, iconBg: 'bg-blue-400/25 text-blue-200' },
             { label: 'Completion Rate', val: `${data?.executiveSummary?.learningCoveragePct || 88}%`, icon: Percent, iconBg: 'bg-purple-400/25 text-purple-200' },

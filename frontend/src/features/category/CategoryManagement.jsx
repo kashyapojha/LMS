@@ -130,9 +130,7 @@ export default function CategoryManagement() {
   return (
     <div className="flex min-h-screen flex-col bg-brand-surface text-brand-text-primary transition-colors">
       {/* Page header bar */}
-      <div
-        className="flex items-center justify-between px-8 py-4 bg-brand-background border-b border-brand-border"
-      >
+      <div className="flex flex-col gap-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-8 bg-brand-background border-b border-brand-border">
         <div>
           <h1 className="text-2xl font-bold text-brand-text-primary">Categories</h1>
           <p className="mt-0.5 text-sm text-brand-text-secondary">Manage all learning categories on the platform</p>
@@ -140,7 +138,7 @@ export default function CategoryManagement() {
         <button
           type="button"
           onClick={() => navigate('/admin/categories/new')}
-          className="flex items-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+          className="flex items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
           style={{ backgroundColor: '#01ac9f' }}
         >
           <Plus className="h-[15px] w-[15px]" />
@@ -149,7 +147,7 @@ export default function CategoryManagement() {
       </div>
 
       {/* Content area */}
-      <div className="flex-1 px-8 py-6">
+      <div className="flex-1 px-4 py-6 sm:px-8">
         {/* Stats grid */}
         <div className="mb-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
           <StatCard icon={Tag}          label="Total Categories" value={stats.total}        color="purple" index={0} />
@@ -159,11 +157,10 @@ export default function CategoryManagement() {
         </div>
 
         {/* Filters toolbar */}
-        <div className="mb-5 flex items-center gap-3">
+        <div className="mb-5 flex flex-col gap-3 lg:flex-row lg:items-center">
           {/* Search */}
           <div
-            className="flex flex-1 items-center gap-2 rounded-md border bg-brand-background border-brand-border px-3 py-2"
-            style={{ maxWidth: 280 }}
+            className="flex w-full items-center gap-2 rounded-md border bg-brand-background border-brand-border px-3 py-2 sm:max-w-[320px]"
           >
             <Search className="h-3.5 w-3.5 shrink-0 text-brand-text-secondary" />
             <input
@@ -183,7 +180,7 @@ export default function CategoryManagement() {
 
           {/* View toggle */}
           <div
-            className="ml-auto flex items-center gap-1 rounded-md border bg-brand-background border-brand-border p-1"
+            className="flex items-center gap-1 rounded-md border bg-brand-background border-brand-border p-1"
           >
             <button
               type="button"
