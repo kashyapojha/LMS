@@ -170,12 +170,32 @@ jobs:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
           DEPLOY_PATH: ${{ env.DEPLOY_PATH }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
+          CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+          CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ env.SSH_PORT }}
-          envs: IMAGE_TAG,DOCKERHUB_USERNAME,DOCKERHUB_TOKEN,DEPLOY_PATH
+          envs: IMAGE_TAG,DOCKERHUB_USERNAME,DOCKERHUB_TOKEN,DEPLOY_PATH,POSTGRES_DB,POSTGRES_USER,POSTGRES_PASSWORD,CLOUDINARY_CLOUD_NAME,CLOUDINARY_API_KEY,CLOUDINARY_API_SECRET
           script: |
+            cat > ${DEPLOY_PATH}/.env << EOF
+            DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME}
+            IMAGE_TAG=${IMAGE_TAG}
+            POSTGRES_DB=${POSTGRES_DB}
+            POSTGRES_USER=${POSTGRES_USER}
+            POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+            REDIS_HOST=redis
+            REDIS_PORT=6379
+            CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
+            CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
+            CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
+            FRONTEND_PORT=80
+            EOF
+            chmod 600 ${DEPLOY_PATH}/.env
             chmod +x ${DEPLOY_PATH}/deploy/scripts/deploy.sh
             ${DEPLOY_PATH}/deploy/scripts/deploy.sh
