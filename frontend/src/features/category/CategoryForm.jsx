@@ -7,6 +7,7 @@ import {
   Upload, Link2, ImageIcon, X,
 } from 'lucide-react';
 import { useCatalog } from '@/hooks/useCatalog';
+import api from '@/services/api';
 
 /* ─── Design-token palette (matches createcategory.html) ─── */
 const SWATCH_PALETTE = [
@@ -123,15 +124,47 @@ function ImageMedia({ value, onChange }) {
   const [subTab, setSubTab] = useState('upload'); // upload | url
   const [urlInput, setUrlInput] = useState('');
   const [dragOver, setDragOver] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [error, setError] = useState('');
   const fileRef = useRef(null);
 
   // Determine if current value is an image URL/data URL
   const isImageValue = value && (value.startsWith('http') || value.startsWith('data:') || value.startsWith('blob:'));
 
-  const handleFile = (file) => {
+  const handleFile = async (file) => {
+    setError('');
     if (!file || !file.type.startsWith('image/')) return;
-    const objectUrl = URL.createObjectURL(file);
-    onChange(objectUrl);
+
+    try {
+      setUploading(true);
+      setProgress(5);
+
+      const formData = new FormData();
+      formData.append('file', file, file.name || 'upload.jpg');
+
+      const resp = await api.post('/media/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        onUploadProgress: (evt) => {
+          if (evt.total) {
+            const pct = Math.round((evt.loaded / evt.total) * 100);
+            setProgress(pct);
+          }
+        }
+      });
+
+      const uploadedUrl = resp?.data?.data?.url;
+      if (uploadedUrl) {
+        onChange(uploadedUrl);
+      } else {
+        setError('Upload failed: invalid server response');
+      }
+    } catch (err) {
+      setError('Upload failed. Please try again.');
+    } finally {
+      setUploading(false);
+      setTimeout(() => setProgress(0), 400);
+    }
   };
 
   const handleDrop = (e) => {
@@ -187,7 +220,7 @@ function ImageMedia({ value, onChange }) {
               onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
               onDragLeave={() => setDragOver(false)}
               onDrop={handleDrop}
-              onClick={() => fileRef.current?.click()}
+              onClick={() => !uploading && fileRef.current?.click()}
               className="cursor-pointer flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed py-6 transition-colors"
               style={{
                 borderColor: dragOver ? '#01ac9f' : '#dadcea',
@@ -200,14 +233,24 @@ function ImageMedia({ value, onChange }) {
                 accept="image/*"
                 className="hidden"
                 onChange={(e) => handleFile(e.target.files[0])}
+                disabled={uploading}
               />
               <Upload className="w-5 h-5" style={{ color: dragOver ? '#01ac9f' : '#9ca3af' }} />
               <div className="text-center">
                 <p className="text-xs font-semibold" style={{ color: dragOver ? '#01ac9f' : '#5a5a5a' }}>
-                  Drop image here or <span style={{ color: '#6c1d5f', textDecoration: 'underline' }}>browse</span>
+                  {uploading ? 'Uploading image…' : 'Drop image here or '}<span style={{ color: '#6c1d5f', textDecoration: 'underline' }}>{!uploading ? 'browse' : ''}</span>
                 </p>
                 <p className="text-xs mt-0.5" style={{ color: '#9ca3af' }}>PNG, JPG, SVG, WEBP up to 5 MB</p>
               </div>
+
+              {uploading && (
+                <div className="w-full mt-3 px-6">
+                  <div className="w-full bg-white/20 h-1.5 rounded-full overflow-hidden">
+                    <div className="h-full bg-accent-teal transition-all duration-300" style={{ width: `${progress}%` }} />
+                  </div>
+                  {error && <p className="text-[11px] font-semibold text-red-500 mt-2">{error}</p>}
+                </div>
+              )}
             </div>
           ) : (
             /* ── URL input ── */
