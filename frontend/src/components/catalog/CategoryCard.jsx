@@ -28,6 +28,10 @@ export default function CategoryCard({ category, courseCount, onEdit, onDelete, 
   const color = category.color || '#01AC9F';
   const studentCount = category.studentCount ?? Math.max((courseCount ?? 0) * 120, 0);
   const slug = slugify(category.name);
+  const rawName = category.name || '';
+  const displayName = (rawName && !rawName.startsWith('blob:') && !rawName.startsWith('http') && !rawName.includes('/upload/'))
+    ? rawName
+    : (category.slug || `Category ${category.id}`);
 
   return (
     <motion.div
@@ -42,20 +46,30 @@ export default function CategoryCard({ category, courseCount, onEdit, onDelete, 
         {/* Icon + Status badge */}
         <div className="mb-3 flex items-start justify-between">
           <div
-            className="flex h-12 w-12 items-center justify-center rounded-xl text-2xl"
+            className="flex h-12 w-12 items-center justify-center rounded-xl text-2xl overflow-hidden"
             style={{
               backgroundColor: `${color}18`,
               border: `1.5px solid ${color}30`,
             }}
           >
-            {category.icon || '💻'}
+            {(() => {
+              const iconVal = category.icon || '';
+              if (iconVal && (iconVal.startsWith('http') || iconVal.startsWith('/') || iconVal.startsWith('data:'))) {
+                // If path is a leading slash that's not an uploads path, assume Cloudinary shorthand
+                const srcUrl = (iconVal.startsWith('/') && !iconVal.startsWith('/uploads/'))
+                  ? `https://res.cloudinary.com${iconVal}`
+                  : iconVal;
+                return <img src={srcUrl} alt="icon" className="h-full w-full object-cover" />;
+              }
+              return <span>{iconVal || '💻'}</span>;
+            })()}
           </div>
           <StatusBadge status={category.deletedAt ? 'inactive' : (category.status || 'active')} />
         </div>
 
         {/* Name + slug */}
         <div className="mb-2">
-          <p className="text-sm font-bold text-brand-text-primary">{category.name}</p>
+          <p className="text-sm font-bold text-brand-text-primary">{displayName}</p>
           <p className="mt-0.5 font-mono text-xs text-brand-text-secondary">{slug}</p>
         </div>
 
@@ -120,19 +134,32 @@ export default function CategoryCard({ category, courseCount, onEdit, onDelete, 
 export function CategoryRow({ category, courseCount, onEdit, onDelete, onView }) {
   const color = category.color || '#01AC9F';
   const slug = slugify(category.name);
+  const rawName = category.name || '';
+  const displayName = (rawName && !rawName.startsWith('blob:') && !rawName.startsWith('http') && !rawName.includes('/upload/'))
+    ? rawName
+    : (category.slug || `Category ${category.id}`);
 
   return (
     <tr className="border-b border-brand-border transition-colors hover:bg-brand-surface/40">
       <td className="px-4 py-3">
         <button type="button" onClick={() => onView(category)} className="flex items-center gap-2.5 text-left">
           <span
-            className="flex h-9 w-9 items-center justify-center rounded-xl text-base"
+            className="flex h-9 w-9 items-center justify-center rounded-xl text-base overflow-hidden"
             style={{ backgroundColor: `${color}18`, border: `1.5px solid ${color}30` }}
           >
-            {category.icon || '💻'}
+            {(() => {
+              const iconVal = category.icon || '';
+              if (iconVal && (iconVal.startsWith('http') || iconVal.startsWith('/') || iconVal.startsWith('data:'))) {
+                const srcUrl = (iconVal.startsWith('/') && !iconVal.startsWith('/uploads/'))
+                  ? `https://res.cloudinary.com${iconVal}`
+                  : iconVal;
+                return <img src={srcUrl} alt="icon" className="h-full w-full object-cover" />;
+              }
+              return <span>{iconVal || '💻'}</span>;
+            })()}
           </span>
           <div>
-            <p className="text-sm font-semibold text-brand-text-primary">{category.name}</p>
+            <p className="text-sm font-semibold text-brand-text-primary">{displayName}</p>
             <p className="font-mono text-xs text-brand-text-secondary">{slug}</p>
           </div>
         </button>
