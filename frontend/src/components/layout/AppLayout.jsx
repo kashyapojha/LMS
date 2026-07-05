@@ -24,7 +24,7 @@ export default function AppLayout({ children }) {
   }, [pathname]);
 
   return (
-    <div className="min-h-screen bg-brand-surface text-brand-text-primary transition-colors duration-200">
+    <div className="min-h-screen bg-brand-surface text-brand-text-primary transition-colors duration-200 lg:flex">
       <Sidebar mobileOpen={mobileOpen} onMobileClose={() => setMobileOpen(false)} />
 
       <button
@@ -39,7 +39,7 @@ export default function AppLayout({ children }) {
         </svg>
       </button>
 
-      <div className="lg:pl-[220px] pl-0">
+      <div className="flex-1 min-h-screen">
         <main className="min-h-screen pt-5 lg:pt-0">{children}</main>
       </div>
     </div>

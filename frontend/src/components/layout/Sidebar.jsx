@@ -51,7 +51,7 @@ export default function Sidebar({ mobileOpen, onMobileClose }) {
 
       <aside
         className={cn(
-          'fixed left-0 top-0 z-50 h-screen w-72 flex-col overflow-hidden transition-transform duration-300 lg:static lg:block lg:h-screen lg:w-[220px]',
+          'fixed left-0 top-0 z-50 h-screen w-72 flex flex-col overflow-hidden transition-transform duration-300 lg:static lg:block lg:h-screen lg:w-[220px]',
           mobileOpen ? 'translate-x-0' : '-translate-x-full',
           'lg:translate-x-0'
         )}
