@@ -1,6 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { studentAuthService } from './studentAuthService';
 import { useToast } from '@/hooks/useToast';
+import api from '@/services/api';
 
 export const StudentAuthContext = createContext(null);
 
@@ -10,33 +11,46 @@ export function StudentAuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const { showToast } = useToast();
 
-  // Load token and user from localStorage on mount
+  // Load student profile on mount using HttpOnly Cookie
   useEffect(() => {
-    const storedToken = localStorage.getItem('xebia-student-token');
-    const storedUser = localStorage.getItem('xebia-student-user');
-    
-    if (storedToken && storedUser) {
-      setStudentToken(storedToken);
-      try {
-        setStudentUser(JSON.parse(storedUser));
-      } catch {
-        localStorage.removeItem('xebia-student-user');
+    const checkStudentAuth = async () => {
+      const cachedUser = localStorage.getItem('xebia-student-user');
+      if (cachedUser) {
+        try {
+          setStudentUser(JSON.parse(cachedUser));
+          setStudentToken('cookie-session');
+        } catch (e) {
+          localStorage.removeItem('xebia-student-user');
+        }
       }
-    }
-    setLoading(false);
+      
+      try {
+        const response = await api.get('/auth/me');
+        const userDetails = response.data.data;
+        
+        setStudentUser(userDetails);
+        setStudentToken('cookie-session');
+        localStorage.setItem('xebia-student-user', JSON.stringify(userDetails));
+      } catch (err) {
+        setStudentUser(null);
+        setStudentToken(null);
+        localStorage.removeItem('xebia-student-user');
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    checkStudentAuth();
   }, []);
 
   const login = useCallback(async (email, password) => {
     setLoading(true);
     try {
-      const data = await studentAuthService.login(email, password);
-      const { accessToken, refreshToken, user } = data;
+      const user = await studentAuthService.login(email, password);
       
-      localStorage.setItem('xebia-student-token', accessToken);
-      localStorage.setItem('xebia-student-refresh-token', refreshToken);
       localStorage.setItem('xebia-student-user', JSON.stringify(user));
       
-      setStudentToken(accessToken);
+      setStudentToken('cookie-session');
       setStudentUser(user);
       
       showToast('Successfully logged in!', 'success');
@@ -63,15 +77,19 @@ export function StudentAuthProvider({ children }) {
     }
   }, [showToast]);
 
-  const logout = useCallback(() => {
-    localStorage.removeItem('xebia-student-token');
-    localStorage.removeItem('xebia-student-refresh-token');
+  const logout = useCallback(async () => {
+    try {
+      await api.post('/auth/logout');
+    } catch (err) {
+      // Ignore network errors on logout to allow offline logout
+    }
     localStorage.removeItem('xebia-student-user');
     
     setStudentToken(null);
     setStudentUser(null);
     
     showToast('Logged out successfully', 'info');
+    window.location.href = '/student/login';
   }, [showToast]);
 
   const value = useMemo(() => ({

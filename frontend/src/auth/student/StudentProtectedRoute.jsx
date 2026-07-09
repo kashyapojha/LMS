@@ -17,9 +17,14 @@ export default function StudentProtectedRoute({ children }) {
     );
   }
 
-  if (!isAuthenticated || user?.role !== 'student') {
+  if (!isAuthenticated) {
     // Redirect to the student login page and save the attempted location
     return <Navigate to="/student/login" state={{ from: location }} replace />;
+  }
+
+  // Guard: Student routes are accessible only by STUDENT
+  if (user && user.role?.toUpperCase() !== 'STUDENT') {
+    return <Navigate to="/admin/dashboard" replace />;
   }
 
   return children;

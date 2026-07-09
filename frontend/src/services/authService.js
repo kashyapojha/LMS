@@ -3,16 +3,16 @@ import api from './api';
 export const authService = {
   login: async (email, password) => {
     const response = await api.post('/auth/login', { email, password });
-    return response.data; // { message: "...", data: { accessToken, refreshToken, user: { ... } } }
+    return response.data;
   },
 
-  refresh: async (refreshToken) => {
-    const response = await api.post('/auth/refresh', { refreshToken });
+  logout: async () => {
+    const response = await api.post('/auth/logout');
     return response.data;
   },
 
   getProfile: async () => {
-    const response = await api.get('/auth/profile');
+    const response = await api.get('/auth/me');
     return response.data;
   },
 };

@@ -59,8 +59,8 @@ export default function StudentLoginPage() {
       const user = await login(email, password);
 
       // Redirect based on role
-      const userRole = user.role?.toLowerCase();
-      if (userRole === 'admin') {
+      const userRole = user.role?.toUpperCase();
+      if (userRole === 'ADMIN') {
         navigate('/admin/dashboard', { replace: true });
       } else {
         navigate('/student/dashboard', { replace: true });

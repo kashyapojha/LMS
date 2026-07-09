@@ -10,33 +10,47 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const { showToast } = useToast();
 
-  // Load token and user from localStorage on mount
+  // Load user profile on mount using HttpOnly Cookie
   useEffect(() => {
-    const storedToken = localStorage.getItem('xebia-lms-token');
-    const storedUser = localStorage.getItem('xebia-lms-user');
-    
-    if (storedToken && storedUser) {
-      setToken(storedToken);
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch {
-        localStorage.removeItem('xebia-lms-user');
+    const checkAuth = async () => {
+      const cachedUser = localStorage.getItem('xebia-lms-user');
+      if (cachedUser) {
+        try {
+          setUser(JSON.parse(cachedUser));
+          setToken('cookie-session');
+        } catch (e) {
+          localStorage.removeItem('xebia-lms-user');
+        }
       }
-    }
-    setLoading(false);
+      
+      try {
+        const response = await authService.getProfile();
+        const userDetails = response.data;
+        
+        setUser(userDetails);
+        setToken('cookie-session');
+        localStorage.setItem('xebia-lms-user', JSON.stringify(userDetails));
+      } catch (err) {
+        setUser(null);
+        setToken(null);
+        localStorage.removeItem('xebia-lms-user');
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    checkAuth();
   }, []);
 
   const login = useCallback(async (email, password) => {
     setLoading(true);
     try {
       const response = await authService.login(email, password);
-      const { accessToken, refreshToken, user: loggedUser } = response.data;
+      const loggedUser = response.data;
       
-      localStorage.setItem('xebia-lms-token', accessToken);
-      localStorage.setItem('xebia-lms-refresh-token', refreshToken);
       localStorage.setItem('xebia-lms-user', JSON.stringify(loggedUser));
       
-      setToken(accessToken);
+      setToken('cookie-session');
       setUser(loggedUser);
       
       showToast('Successfully logged in', 'success');
@@ -60,15 +74,19 @@ export function AuthProvider({ children }) {
     }
   }, [showToast]);
 
-  const logout = useCallback(() => {
-    localStorage.removeItem('xebia-lms-token');
-    localStorage.removeItem('xebia-lms-refresh-token');
+  const logout = useCallback(async () => {
+    try {
+      await authService.logout();
+    } catch (err) {
+      // Ignore network errors on logout to allow offline logout
+    }
     localStorage.removeItem('xebia-lms-user');
     
     setToken(null);
     setUser(null);
     
     showToast('Logged out successfully', 'info');
+    window.location.href = '/admin/login';
   }, [showToast]);
 
   const value = useMemo(() => ({
