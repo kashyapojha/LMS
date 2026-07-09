@@ -40,6 +40,7 @@ public class SecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/actuator/health", "/actuator/info").permitAll()
                         .requestMatchers("/api/auth/login", "/api/auth/register/admin", "/api/auth/register/student").permitAll()
                         .requestMatchers("/uploads/**").permitAll()
                         .requestMatchers("/api/auth/logout", "/api/auth/me").authenticated()
