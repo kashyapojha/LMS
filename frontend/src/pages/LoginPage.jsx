@@ -49,9 +49,15 @@ export default function LoginPage() {
     
     setLoading(true);
     try {
-      await login(email, password);
-      // Redirect to the originally requested route or default dashboard
-      navigate(from, { replace: true });
+      const loggedUser = await login(email, password);
+      const userRole = loggedUser.role?.toUpperCase();
+      if (userRole === 'ADMIN') {
+        navigate('/admin/dashboard', { replace: true });
+      } else if (userRole === 'STUDENT') {
+        navigate('/student/dashboard', { replace: true });
+      } else {
+        navigate(from, { replace: true });
+      }
     } catch (err) {
       let errorMsg;
       if (err.response) {

@@ -5,79 +5,24 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true,
 });
 
-// Request Interceptor: Attach access token
-api.interceptors.request.use(
-  (config) => {
-    const isStudentPath = window.location.pathname.startsWith('/student');
-    const token = isStudentPath
-      ? localStorage.getItem('xebia-student-token')
-      : localStorage.getItem('xebia-lms-token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
-// Response Interceptor: Handle errors and refresh token
+// Response Interceptor: Handle errors
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    const originalRequest = error.config;
     const isStudentPath = window.location.pathname.startsWith('/student');
+    const isLoginPage = window.location.pathname.endsWith('/login') || window.location.pathname.endsWith('/register');
+    const isAuthEndpoint = error.config?.url?.includes('/auth/');
     
-    // Check if error is 401 and we haven't retried yet
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-      const refreshToken = isStudentPath
-        ? localStorage.getItem('xebia-student-refresh-token')
-        : localStorage.getItem('xebia-lms-refresh-token');
-      
-      if (refreshToken) {
-        try {
-          // Attempt to refresh token using axios directly to avoid interceptor loop
-          const res = await axios.post(`${api.defaults.baseURL}/auth/refresh`, { refreshToken });
-          const { accessToken } = res.data.data;
-          
-          if (isStudentPath) {
-            localStorage.setItem('xebia-student-token', accessToken);
-          } else {
-            localStorage.setItem('xebia-lms-token', accessToken);
-          }
-          originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-          
-          return api(originalRequest);
-        } catch (refreshError) {
-          // Refresh failed: clear storage and redirect
-          if (isStudentPath) {
-            localStorage.removeItem('xebia-student-token');
-            localStorage.removeItem('xebia-student-refresh-token');
-            localStorage.removeItem('xebia-student-user');
-            window.location.href = '/student/login';
-          } else {
-            localStorage.removeItem('xebia-lms-token');
-            localStorage.removeItem('xebia-lms-refresh-token');
-            localStorage.removeItem('xebia-lms-user');
-            window.location.href = '/admin/login';
-          }
-          return Promise.reject(refreshError);
-        }
+    if (error.response?.status === 401 && !isLoginPage && !isAuthEndpoint) {
+      if (isStudentPath) {
+        localStorage.removeItem('xebia-student-user');
+        window.location.href = '/student/login';
       } else {
-        // No refresh token: clear storage and redirect
-        if (isStudentPath) {
-          localStorage.removeItem('xebia-student-token');
-          localStorage.removeItem('xebia-student-refresh-token');
-          localStorage.removeItem('xebia-student-user');
-          window.location.href = '/student/login';
-        } else {
-          localStorage.removeItem('xebia-lms-token');
-          localStorage.removeItem('xebia-lms-refresh-token');
-          localStorage.removeItem('xebia-lms-user');
-          window.location.href = '/admin/login';
-        }
+        localStorage.removeItem('xebia-lms-user');
+        window.location.href = '/admin/login';
       }
     }
     
