@@ -7,7 +7,7 @@ import { initialMockData } from '@/services/mockData';
 import { BRAND_DEFAULTS } from '@/constants';
 import { useToast } from '@/hooks/useToast';
 import { getAIPlaceholderImage } from '@/utils/placeholderUtils';
-
+import { useAuth } from '@/hooks/useAuth';
 const BRAND_KEY = 'xebia-lms-branding';
 const NOTIFICATIONS_KEY = 'xebia-lms-notifications';
 
@@ -367,16 +367,22 @@ export function CatalogProvider({ children }) {
   const [branding, setBrandingState] = useState(BRAND_DEFAULTS);
   const [notifications, setNotifications] = useState([]);
   const [hydrated, setHydrated] = useState(false);
-  const { showToast } = useToast();
+const { showToast } = useToast();
+const { isAuthenticated, loading: authLoading, user } = useAuth();
+const isAdmin = isAuthenticated && user?.role?.toUpperCase() === 'ADMIN';
 
-  // Load backend data and initialize local store configs
-  const refreshData = useCallback(async () => {
-    try {
-      const [resCat, resCourse] = await Promise.all([
-        api.get('/categories'),
-        api.get('/courses')
-      ]);
-
+// Load backend data and initialize local store configs
+// NOTE: /categories and /courses are ADMIN-only endpoints (see SecurityConfig).
+// Skip the call entirely when there's no authenticated admin, otherwise this
+// fires on every page load (including the login/sign-up screens) and always
+// returns 401.
+const refreshData = useCallback(async () => {
+  if (!isAdmin) return;
+  try {
+    const [resCat, resCourse] = await Promise.all([
+      api.get('/categories'),
+      api.get('/courses')
+    ]);
       const rawCats = resCat.data.data || [];
       const rawCourses = resCourse.data.data || [];
 
@@ -393,19 +399,20 @@ export function CatalogProvider({ children }) {
         categories: mappedCats,
         courses: mappedCourses,
       }));
-    } catch (err) {
+      } catch (err) {
       console.error('Error fetching data from API:', err);
       showToast('Error syncing with backend server', 'error');
     }
-  }, [showToast]);
+  }, [isAdmin, showToast]);
 
   useEffect(() => {
-    refreshData().then(() => {
-      setBrandingState(loadBranding());
-      setNotifications(loadNotifications());
-      setHydrated(true);
-    });
-  }, [refreshData]);
+  if (authLoading) return; // wait until we know whether an admin session exists
+  refreshData().then(() => {
+    setBrandingState(loadBranding());
+    setNotifications(loadNotifications());
+    setHydrated(true);
+  });
+}, [refreshData, authLoading]);
 
   useEffect(() => {
     if (hydrated) {
