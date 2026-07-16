@@ -8,9 +8,16 @@ import Input from '@/components/ui/Input';
 import StudentLogo from '@/components/ui/StudentLogo';
 
 export default function StudentLoginPage() {
-  const { login } = useStudentAuth();
+  const { login, isAuthenticated, user, loading: authLoading } = useStudentAuth();
   const navigate = useNavigate();
   const location = useLocation();
+   useEffect(() => {
+    if (!authLoading && isAuthenticated) {
+      const role = user?.role?.toUpperCase();
+      navigate(role === 'ADMIN' ? '/admin/dashboard' : '/student/dashboard', { replace: true });
+    }
+  }, [authLoading, isAuthenticated, user, navigate]);
+
 
   // Login credentials states
   const [email, setEmail] = useState('');

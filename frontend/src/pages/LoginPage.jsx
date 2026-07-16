@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Mail, Lock, ShieldAlert, CheckCircle } from 'lucide-react';
+import { useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
@@ -13,6 +14,12 @@ export default function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+   useEffect(() => {
+    if (!authLoading && isAuthenticated) {
+      const role = user?.role?.toUpperCase();
+      navigate(role === 'STUDENT' ? '/student/dashboard' : '/admin/dashboard', { replace: true });
+    }
+  }, [authLoading, isAuthenticated, user, navigate]);
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
