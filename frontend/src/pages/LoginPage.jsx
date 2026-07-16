@@ -11,7 +11,8 @@ import Input from '@/components/ui/Input';
 import Logo from '@/components/ui/Logo';
 
 export default function LoginPage() {
-  const { login } = useAuth();
+
+  const { login, isAuthenticated, user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
    useEffect(() => {
