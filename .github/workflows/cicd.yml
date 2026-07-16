@@ -114,11 +114,11 @@ jobs:
           context: ./backend
           file: ./backend/Dockerfile
           push: true
+          no-cache: true
+          pull: true
           tags: |
             ${{ env.DOCKERHUB_BACKEND_IMAGE }}:${{ steps.meta.outputs.tag }}
             ${{ env.DOCKERHUB_BACKEND_IMAGE }}:${{ steps.meta.outputs.latest_tag }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
       - name: Build and push frontend image
         uses: docker/build-push-action@v6
@@ -126,11 +126,11 @@ jobs:
           context: ./frontend
           file: ./frontend/Dockerfile
           push: true
+          no-cache: true
+          pull: true
           tags: |
             ${{ env.DOCKERHUB_FRONTEND_IMAGE }}:${{ steps.meta.outputs.tag }}
             ${{ env.DOCKERHUB_FRONTEND_IMAGE }}:${{ steps.meta.outputs.latest_tag }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
       - name: Export image tag
         id: export
